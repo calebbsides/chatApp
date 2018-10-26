@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "chatApp",
-    "description": "A very interesting project.",
+    "name": "Chat App",
+    "description": "A super sick chat app using react-native, expo, redux, firebase, & pusher.",
     "slug": "chatApp",
     "privacy": "public",
     "sdkVersion": "30.0.0",

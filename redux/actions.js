@@ -21,12 +21,12 @@ const actions = {
     },
     watchMessages: () => {
         return dispatch => {
-            Firebase.database().ref("messages").on("value", 
+            Firebase.database().ref("messages").on("value",
                 data => {
                     let messages = data.val();
                     let arr = [];
                     for (var message in messages) {
-                        if(messages[message].message !== "") {
+                        if (messages[message].message !== "") {
                             arr.push(messages[message]);
                         }
                     }
@@ -45,9 +45,41 @@ const actions = {
     },
     writeUser: (user) => {
         return dispatch => {
-            Firebase.database().ref("users").push(user);
+            const newUserKey = Firebase.database().ref().child('users').push().key;
+            const newUser = {
+                ...user,
+                userKey: newUserKey
+            }
+
+            let updates = {};
+            updates['/users/' + newUserKey] = newUser;
+
+            dispatch(actions.setUser(newUser));
+            return Firebase.database().ref().update(updates, 
+                err => {
+
+                }    
+            );
+        }
+    },
+    updateUser: (user) => {
+        return dispatch => {
+
+            let updates = {};
+            updates['/users/' + user.userKey] = user;
+
+            dispatch(actions.setUser(user));
+            return Firebase.database().ref().update(updates, 
+                error => {
+                    if(error) {
+                        console.info(error.message);
+                    }
+                }    
+            );
         }
     }
 }
 
-export { actions };
+export {
+    actions
+};

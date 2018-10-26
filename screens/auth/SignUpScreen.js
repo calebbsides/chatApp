@@ -34,13 +34,14 @@ class SignUpScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userid: '',
             password: '',
             passwordConfirm: ''
         };
     }
 
     _handleCreateAcountPress = () => {
-        const { userid } = this.props.user;
+        const { userid } = this.state;
         const { password } = this.state;
         const { passwordConfirm } = this.state;
 
@@ -51,7 +52,7 @@ class SignUpScreen extends Component {
 
         Firebase.auth().createUserWithEmailAndPassword(userid, password).then(
             () => {
-                this.props.actions.writeUser({ userid: userid });
+                this.props.actions.writeUser({ ...this.props.user, userid: this.state.userid });
             },
             error => {
                 Alert.alert(error.message)
@@ -68,7 +69,7 @@ class SignUpScreen extends Component {
                     value={ this.props.userid } 
                     placeholder={ 'Email' }
                     autoCapitalize={ 'none' }
-                    onChangeText={ text => { this.props.actions.setUser({ userid: text }) } } />
+                    onChangeText={ text => { this.setState({ userid: text }) } } />
                 <TextInput 
                     style={ styles.input } 
                     value={ this.state.password } 

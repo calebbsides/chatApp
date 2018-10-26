@@ -46,17 +46,33 @@ class ChatLog extends Component {
         this.props.actions.watchMessages();
     }
 
+    sendNotification = (message) => {
+        fetch("https://exp.host/--/api/v2/push/send", {
+            body: JSON.stringify({
+                to: this.props.user.pushToken,
+                title: "New Message",
+                body: message
+            }),
+            headers: {
+              "Content-Type": "application/json"
+            },
+            method: "POST"
+        });
+    }
+
     componentDidMount() {
         this.props.actions.setChannel(this.props.pusher.subscribe('private-NuggetsOnly'));
 
         this.props.pusher.bind('receiveMessage', (data) => {
             this.props.actions.setMessages([...this.props.messages, { message: data.message, align: 'left' }]);
             this.props.actions.writeMessage( { message: data.message, align: 'left' } );
+            this.sendNotification(data.message);
         });
 
         this.props.pusher.bind('client-message', (data) => {
             this.props.actions.setMessages([...this.props.messages, {  message: data.message, align: 'left' }]);
             this.props.actions.writeMessage( { message: data.message, align: 'left' } );
+            this.sendNotification(data.message);
         });
     }
 

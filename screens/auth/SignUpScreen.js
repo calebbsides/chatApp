@@ -6,21 +6,41 @@ import {
   Alert
 } from 'react-native';
 import * as Firebase from 'firebase';
+import { connect } from 'react-redux';
+import { actions } from '../../redux/actions';
 
 import styles from '../../styles/authStyles';
 
-export default class SignUpScreen extends Component {
+mapStateToProps = state => {
+    return {
+        user: state.user
+    };
+}
+  
+mapDispatchToProps = dispatch => {
+    return {
+        actions: {
+            setUser: user => {
+                dispatch(actions.setUser(user));
+            },
+            writeUser: user => {
+                dispatch(actions.writeUser(user));
+            }
+        }
+    };
+}
+
+class SignUpScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userid: '',
             password: '',
             passwordConfirm: ''
         };
     }
 
     _handleCreateAcountPress = () => {
-        const { userid } = this.state;
+        const { userid } = this.props.user;
         const { password } = this.state;
         const { passwordConfirm } = this.state;
 
@@ -31,7 +51,7 @@ export default class SignUpScreen extends Component {
 
         Firebase.auth().createUserWithEmailAndPassword(userid, password).then(
             () => {
-
+                this.props.actions.writeUser({ userid: userid });
             },
             error => {
                 Alert.alert(error.message)
@@ -44,10 +64,10 @@ export default class SignUpScreen extends Component {
             <View style={ styles.container }>
                 <TextInput 
                     style={ styles.input } 
-                    value={ this.state.userid } 
+                    value={ this.props.userid } 
                     placeholder={ 'Email' }
                     autoCapitalize={ 'none' }
-                    onChangeText={ text => { this.setState({ userid: text }) } } />
+                    onChangeText={ text => { this.props.actions.setUser({ userid: text }) } } />
                 <TextInput 
                     style={ styles.input } 
                     value={ this.state.password } 
@@ -67,3 +87,5 @@ export default class SignUpScreen extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);

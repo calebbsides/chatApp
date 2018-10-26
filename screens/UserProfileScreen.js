@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import {
   Button,
-  View
+  View,
+  Text
 } from 'react-native';
 import * as Firebase from 'firebase';
+import { connect } from 'react-redux';
 
 import styles from '../styles/appStyles';
 
-export default class UserProfileScreen extends Component {
+mapStateToProps = state => {
+    return {
+        user: state.user
+    };
+}
+  
+mapDispatchToProps = dispatch => {
+    return {};
+}
+
+class UserProfileScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -20,8 +32,11 @@ export default class UserProfileScreen extends Component {
     render() {
         return (
         <View style={styles.profile_container}>
+            <Text>{this.props.user.userid}</Text>
             <Button title={ 'Sign Out' } onPress={this._handleSignOutPress} />
         </View>
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileScreen);

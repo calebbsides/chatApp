@@ -7,7 +7,8 @@ const initialState = {
         encrypted: true
     }),
     channel: null,
-    messages: []
+    messages: [],
+    user: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +22,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 channel: action.data
+            }
+        case "setUser":
+            return {
+                ...state,
+                user: action.data
             }
         default:
             return state;

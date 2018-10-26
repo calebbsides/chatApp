@@ -4,7 +4,7 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import APIKeys from './constants/APIKeys';
 import * as Firebase from 'firebase';
 import { Provider } from 'react-redux';
-import { store } from './redux/app-redux';
+import { store } from './redux/store';
 
 import AppNavigator from './navigation/AppNavigator';
 import MainTabNavigator from './navigation/MainTabNavigator';

@@ -6,25 +6,44 @@ import {
   Alert
 } from 'react-native';
 import * as Firebase from 'firebase';
+import { connect } from 'react-redux';
+import { actions } from '../../redux/actions';
 
 import styles from '../../styles/authStyles';
 
-export default class LogInScreen extends Component {
+mapStateToProps = state => {
+    return {
+        user: state.user
+    };
+}
+  
+mapDispatchToProps = dispatch => {
+    return {
+        actions: {
+            setUser: user => {
+                dispatch(actions.setUser(user));
+            }
+        }
+    };
+}
+
+class LogInScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userid: '',
-            password: ''
-        };
+            password: ""
+        }
     }
 
     _handleLoginPress = () => {
-        const { userid } = this.state;
+        const { userid } = this.props.user;
         const { password } = this.state;
 
         Firebase.auth().signInWithEmailAndPassword(userid, password).then(
             () => {
-
+                this.props.actions.setUser({
+                    userid: userid
+                });
             },
             error => {
                 Alert.alert(error.message);
@@ -50,7 +69,7 @@ export default class LogInScreen extends Component {
                     textContentType={ 'username' }
                     autoCapitalize={ 'none' }
                     keyboardType={ 'email-address' }
-                    onChangeText={ text => { this.setState({ userid: text }) } } />
+                    onChangeText={ text => { this.props.actions.setUser({ userid: text }) } } />
                 <TextInput 
                     style={ styles.input } 
                     value={ this.state.password } 
@@ -66,3 +85,5 @@ export default class LogInScreen extends Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogInScreen);

@@ -20,7 +20,7 @@ class Messages extends Component {
     }
 
     mapMessagesToComponents = () => {
-        return this.props.messages.map((message, index) => {
+        return this.props.messages.reverse().map((message, index) => {
             if(message.align === 'left') {
                 return <Text style={[styles.message_input, styles.message_inputLeft]} key={'Message_' + index}>{message.message}</Text>
             } else {

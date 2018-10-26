@@ -11,7 +11,8 @@ mapStateToProps = state => {
     return {
         messages: state.messages,
         pusher: state.pusher,
-        channel: state.channel
+        channel: state.channel,
+        user: state.user
     };
 }
   
@@ -23,6 +24,12 @@ mapDispatchToProps = dispatch => {
             },
             setChannel: channel => {
                 dispatch(actions.setChannel(channel));
+            },
+            watchMessages: () => {
+                dispatch(actions.watchMessages());
+            },
+            writeMessage: message => {
+                dispatch(actions.writeMessage(message));
             }
         }
     };
@@ -35,6 +42,8 @@ class ChatLog extends Component {
             inputHeight: 10,
             message: ''
         }
+
+        this.props.actions.watchMessages();
     }
 
     componentDidMount() {
@@ -42,10 +51,12 @@ class ChatLog extends Component {
 
         this.props.pusher.bind('receiveMessage', (data) => {
             this.props.actions.setMessages([...this.props.messages, { message: data.message, align: 'left' }]);
+            this.props.actions.writeMessage( { message: data.message, align: 'left' } );
         });
 
         this.props.pusher.bind('client-message', (data) => {
             this.props.actions.setMessages([...this.props.messages, {  message: data.message, align: 'left' }]);
+            this.props.actions.writeMessage( { message: data.message, align: 'left' } );
         });
     }
 
@@ -54,9 +65,12 @@ class ChatLog extends Component {
     }
 
     submitText = () => {
-        if(this.state.message.trim() !== '') {
-            this.props.channel.trigger('client-message', {message: this.state.message} );
-            this.props.actions.setMessages([...this.props.messages, { message: this.state.message, align: 'right' }]);
+        const { message } = this.state;
+
+        if(message.trim() !== '') {
+            this.props.channel.trigger('client-message', {message: message} );
+            this.props.actions.setMessages([...this.props.messages, { message: message, align: 'right' }]);
+            this.props.actions.writeMessage( { message: message, align: 'right' } );
             this.setState({
                 message: ''
             })

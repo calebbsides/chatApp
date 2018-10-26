@@ -1,28 +1,47 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
 import APIKeys from './constants/APIKeys';
 import * as Firebase from 'firebase';
+
+import AppNavigator from './navigation/AppNavigator';
+import MainTabNavigator from './navigation/MainTabNavigator';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoadingComplete: false
+      isLoadingComplete: false,
+      isAuthenticationReady: false,
+      isAuthenticated: false
     };
 
+    // Initialize app if not already initialized
     if(!Firebase.apps.length) {
       Firebase.initializeApp(APIKeys.FirebaseConfig);
     }
+
+    // Listen for authentication changes
+    Firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
   }
 
-  state = {
-    isLoadingComplete: false,
-  };
+  onAuthStateChanged = (user) => {
+    this.setState({ 
+        isAuthenticationReady: true,
+        isAuthenticated: !!user
+    });
+  }
+
+  checkAuthentication = () => {
+    if (this.state.isAuthenticated) {
+      return <MainTabNavigator />;
+    } else {
+      return <AppNavigator />;
+    }
+  }
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    if ((!this.state.isLoadingComplete || !this.state.isAuthenticationReady) && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
           startAsync={this._loadResourcesAsync}
@@ -34,7 +53,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          {this.checkAuthentication()}
         </View>
       );
     }

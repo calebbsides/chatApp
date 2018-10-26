@@ -1,3 +1,3 @@
-import Test from "./test";
+import ChatLog from "./ChatLog";
 
-export { Test };
+export { ChatLog };

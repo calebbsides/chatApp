@@ -55,6 +55,7 @@ class SignUpScreen extends Component {
             },
             error => {
                 Alert.alert(error.message)
+                this.props.navigation.navigate("LogIn");
             }
         );
     }

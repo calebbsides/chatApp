@@ -8,7 +8,9 @@ const initialState = {
     }),
     channel: null,
     messages: [],
-    user: {}
+    user: {
+        userid: ""
+    }
 };
 
 const reducer = (state = initialState, action) => {

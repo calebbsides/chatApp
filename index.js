@@ -18,6 +18,12 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+app.get("/", function (req, res) {
+  res.send(
+    '<h1>Nugget Chat up and running</h1>'
+  );
+});
+
 app.get("/pusher/auth", function (req, res) {
   var query = req.query;
   var socketId = query.socket_id;
@@ -30,11 +36,13 @@ app.get("/pusher/auth", function (req, res) {
   });
   res.send(cb);
 });
+
 app.post('/pusher/auth', function (req, res) {
   var socketId = req.body.socket_id;
   var channel = req.body.channel_name;
   var auth = pusher.authenticate(socketId, channel);
   res.send(auth);
 });
+
 var port = process.env.PORT || 4000;
 app.listen(port, () => console.log('Listening on: http://127.0.0.1:' + port));

@@ -68,7 +68,6 @@ const actions = {
             let updates = {};
             updates['/users/' + user.userKey] = user;
 
-            dispatch(actions.setUser(user));
             return Firebase.database().ref().update(updates, 
                 error => {
                     if(error) {

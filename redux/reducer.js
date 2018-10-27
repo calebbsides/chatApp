@@ -9,7 +9,8 @@ const initialState = {
     channel: null,
     messages: [],
     user: {
-        userid: ""
+        userid: "",
+        userKey: ""
     }
 };
 

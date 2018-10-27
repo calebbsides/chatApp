@@ -64,14 +64,14 @@ class ChatLog extends Component {
         this.props.actions.setChannel(this.props.pusher.subscribe('private-NuggetsOnly'));
 
         this.props.pusher.bind('receiveMessage', (data) => {
-            this.props.actions.setMessages([...this.props.messages, { message: data.message, align: 'left' }]);
-            this.props.actions.writeMessage( { message: data.message, align: 'left' } );
+            this.props.actions.writeMessage({ 
+                message: data.message,
+                user: data.user
+            });
             this.sendNotification(data.message);
         });
 
         this.props.pusher.bind('client-message', (data) => {
-            this.props.actions.setMessages([...this.props.messages, {  message: data.message, align: 'left' }]);
-            this.props.actions.writeMessage( { message: data.message, align: 'left' } );
             this.sendNotification(data.message);
         });
     }
@@ -84,9 +84,14 @@ class ChatLog extends Component {
         const { message } = this.state;
 
         if(message.trim() !== '') {
-            this.props.channel.trigger('client-message', {message: message} );
-            this.props.actions.setMessages([...this.props.messages, { message: message, align: 'right' }]);
-            this.props.actions.writeMessage( { message: message, align: 'right' } );
+            this.props.channel.trigger('client-message', {
+                message: message, 
+                user: this.props.user.userKey
+            });
+            this.props.actions.writeMessage({ 
+                message: message, 
+                user: this.props.user.userKey
+            });
             this.setState({
                 message: ''
             })

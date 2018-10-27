@@ -6,6 +6,7 @@ import styles from '../styles/appStyles';
 
 mapStateToProps = state => {
     return {
+        user: state.user,
         messages: state.messages
     };
 }
@@ -21,10 +22,14 @@ class Messages extends Component {
 
     mapMessagesToComponents = () => {
         return this.props.messages.reverse().map((message, index) => {
-            if(message.align === 'left') {
-                return <Text style={[styles.message_input, styles.message_inputLeft]} key={'Message_' + index}>{message.message}</Text>
+            if(message.user !== this.props.user.userKey) {
+                return (
+                    <Text style={[styles.message_input, styles.message_inputLeft]} key={'Message_' + index}>{message.message}</Text>
+                );
             } else {
-                return <Text style={[styles.message_input, styles.message_inputRight]} key={'Message_' + index}>{message.message}</Text>
+                return (
+                    <Text style={[styles.message_input, styles.message_inputRight]} key={'Message_' + index}>{message.message}</Text>
+                );
             }
         });
     }

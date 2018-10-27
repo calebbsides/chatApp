@@ -3,63 +3,101 @@ import {
   View
 } from 'react-native';
 import * as Firebase from 'firebase';
-import { ChatLog } from "../components";
-import { connect } from 'react-redux';
-import { actions } from '../redux/actions';
-import { Permissions, Notifications } from 'expo';
+import {
+  ChatLog
+} from "../components";
+import {
+  connect
+} from 'react-redux';
+import {
+  actions
+} from '../redux/actions';
+import {
+  Permissions,
+  Notifications
+} from 'expo';
 
 import styles from '../styles/appStyles';
 
 mapStateToProps = state => {
   return {
-      user: state.user
+    user: state.user
   };
 }
 
 mapDispatchToProps = dispatch => {
   return {
-      actions: {
-          setUser: user => {
-            dispatch(actions.setUser(user));
-          },
-          updateUser: user => {
-            dispatch(actions.updateUser(user));
-          }
+    actions: {
+      setUser: user => {
+        dispatch(actions.setUser(user));
+      },
+      updateUser: user => {
+        dispatch(actions.updateUser(user));
       }
+    }
   };
 }
 
 class HomeScreen extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
-
-    this.props.actions.setUser({ ...this.props.user, userid: Firebase.auth().currentUser.email });
+    this.state = {
+      token: ""
+    }
   }
 
-  setUpNotifications = async () => {
-    const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+  _setUpNotifications = async () => {
+    const {
+      status
+    } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = status;
 
-    if(status !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    if (status !== 'granted') {
+      const {
+        status
+      } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
-    
-    if(finalStatus !== 'granted') {
+
+    if (finalStatus !== 'granted') {
       return;
     }
 
-    let token = await Notifications.getExpoPushTokenAsync();
-    this.props.actions.updateUser({ ...this.props.user, pushToken: token });
+    this.setState({ token: await Notifications.getExpoPushTokenAsync()});
+  }
+
+  _setUpUser = async () => {
+    this._setUpNotifications();
+    const currentUserEmail = Firebase.auth().currentUser.email;
+
+    Firebase.database().ref("users").on("value",
+      data => {
+        let users = data.val();
+        for (var user in users) {
+          if (users[user].userid === currentUserEmail) {
+            this.props.actions.setUser({
+              userid: currentUserEmail,
+              userKey: users[user].userKey,
+              pushToken: this.state.token
+            });
+            this.props.actions.updateUser(this.props.user);
+          }
+        }
+      },
+      error => {
+        console.info(error.message)
+      }
+    );
   }
 
   componentDidMount() {
-    this.setUpNotifications();
+    this._setUpUser();
   }
 
   render() {
-    return (
-      <View style={styles.app_container}>
+    return ( 
+      <View style = {styles.app_container} >
+        {this.state.token}
         <ChatLog />
       </View>
     );

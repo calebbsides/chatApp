@@ -18,11 +18,11 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.get("/", function (req, res) {
-  res.send(
-    '<h1>Nugget Chat up and running</h1>'
-  );
-});
+// app.get("/", function (req, res) {
+//   res.send(
+//     '<h1>Nugget Chat up and running</h1>'
+//   );
+// });
 
 app.get("/pusher/auth", function (req, res) {
   var query = req.query;
@@ -34,10 +34,7 @@ app.get("/pusher/auth", function (req, res) {
   res.set({
     "Content-Type": "application/javascript"
   });
-  res.send(
-    '<h1>Listening for Pusher events...</h1>' + 
-    '<p>With auth: ' + cb + '</p>'
-  );
+  res.send(cb);
 });
 
 app.post('/pusher/auth', function (req, res) {

@@ -34,7 +34,7 @@ app.get("/pusher/auth", function (req, res) {
   res.set({
     "Content-Type": "application/javascript"
   });
-  res.send(cb);
+  res.send('<h1>Listening for Pusher events...</h1>' + cb);
 });
 
 app.post('/pusher/auth', function (req, res) {
@@ -43,6 +43,7 @@ app.post('/pusher/auth', function (req, res) {
   var auth = pusher.authenticate(socketId, channel);
   res.send(auth);
 });
+
 
 var port = process.env.PORT || 4000;
 app.listen(port, () => console.log('Listening on: http://127.0.0.1:' + port));

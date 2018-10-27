@@ -36,6 +36,4 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-Pusher.logToConsole = true;
-
 export { reducer };

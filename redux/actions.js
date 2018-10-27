@@ -30,7 +30,7 @@ const actions = {
                             arr.push(messages[message]);
                         }
                     }
-                    dispatch(actions.setMessages(arr.reverse()));
+                    dispatch(actions.setMessages(arr));
                 },
                 error => {
                     console.info(error.message)

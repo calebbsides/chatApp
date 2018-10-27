@@ -65,7 +65,7 @@ export default class LogInScreen extends Component {
                     <View style={ [styles.auth_button, styles.auth_fullWidthButton] } >
                         <Button color={ '#ffffff' } title={ 'Log In' } onPress={this._handleLoginPress} />
                     </View>
-                    <View style={ styles.auth_button } >
+                    <View style={ [styles.auth_button, { marginRight: '5%'}] } >
                         <Button color={ '#ffffff' } title={ 'Forgot Password' } onPress={this._handleForgotPasswordPress} />
                     </View>
                     <View style={ styles.auth_button } >

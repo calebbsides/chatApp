@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet } from 'react-native';
 import Colors from '../constants/Colors';
 
@@ -28,19 +27,20 @@ export default StyleSheet.create({
         backgroundColor: Colors.appPalette2,
     },
     auth_buttonContainer: {
+        width: 300,
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
     },
     auth_button: {
-        width: 140,
-        margin: 10,
+        width: '47.5%',
+        marginTop: 10,
         borderWidth: 1,
         borderColor: Colors.appPalette2,
         borderRadius: 10,
     },
     auth_fullWidthButton: {
-        width: 300
+        width: '100%'
     }
 });

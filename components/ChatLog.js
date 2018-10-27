@@ -10,7 +10,6 @@ import styles from '../styles/appStyles';
 
 mapStateToProps = state => {
     return {
-        messages: state.messages,
         pusher: state.pusher,
         channel: state.channel,
         user: state.user
@@ -40,7 +39,7 @@ class ChatLog extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chain: new Blockchain(this.props.messages, 10, 1),
+            chain: new Blockchain([], 10, 1),
             inputHeight: 10,
             message: ''
         }
@@ -67,8 +66,6 @@ class ChatLog extends Component {
         let channel = this.props.pusher.subscribe('private-NuggetsOnly');
         this.props.actions.setChannel(channel);
 
-        console.info(this.props.channel);
-
         // Write messages from server to database
         this.props.pusher.bind('receiveMessage', (data) => {
             this.props.actions.writeMessage({ 
@@ -93,31 +90,34 @@ class ChatLog extends Component {
 
         if(message.trim() !== '') {
 
-            // Trigger push event with message
-            this.props.channel.trigger('client-message', {
-                message: message, 
-                user: this.props.user.userKey
-            });
-
-            // Write message to database
-            this.props.actions.writeMessage({ 
-                message: message, 
-                user: this.props.user.userKey
-            });
-
             // Add Message to blockchain
             this.state.chain.addMessage({
                 message: this.state.message,
                 user: this.props.user.userid
             });
 
+            // Mine pending messages
+            this.state.chain.minePendingMessages();
+
+            // Write message to database if chain is valid
+            if(this.state.chain.isValid()) {
+                // Trigger push event with message
+                this.props.channel.trigger('client-message', {
+                    message: message, 
+                    user: this.props.user.userKey
+                });
+
+                // Write message to database
+                this.props.actions.writeMessage({ 
+                    message: message, 
+                    user: this.props.user.userKey
+                });
+            }
+
             // Reset message
             this.setState({
                 message: ''
             });
-
-            // Mine pending messages
-            this.state.chain.minePendingMessages();
         }
     }
 

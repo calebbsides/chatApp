@@ -3,7 +3,8 @@ import {
   TextInput,
   View,
   Button,
-  Alert
+  Alert,
+  Text
 } from 'react-native';
 import * as Firebase from 'firebase';
 import { connect } from 'react-redux';
@@ -63,28 +64,34 @@ class SignUpScreen extends Component {
 
     render() {
         return (
-            <View style={ styles.container }>
+            <View style={ styles.auth_container }>
+                <Text style={ styles.auth_heading }>CREATE ACCOUNT</Text>
                 <TextInput 
-                    style={ styles.input } 
+                    style={ styles.auth_input } 
                     value={ this.props.userid } 
                     placeholder={ 'Email' }
                     autoCapitalize={ 'none' }
+                    keyboardType={ 'email-address' }
                     onChangeText={ text => { this.setState({ userid: text }) } } />
                 <TextInput 
-                    style={ styles.input } 
+                    style={ styles.auth_input } 
                     value={ this.state.password } 
                     placeholder={ 'Password' }
                     autoCapitalize={ 'none' }
                     secureTextEntry={ true }
                     onChangeText={ text => { this.setState({ password: text }) } } />
                 <TextInput 
-                    style={ styles.input } 
+                    style={ styles.auth_input } 
                     value={ this.state.passwordConfirm } 
                     placeholder={ 'Confirm Password' }
                     autoCapitalize={ 'none' }
                     secureTextEntry={ true }
                     onChangeText={ text => { this.setState({ passwordConfirm: text }) } } />
-                <Button title={ 'Create Account' } onPress={this._handleCreateAcountPress} />
+                <View style={ styles.auth_buttonContainer }>
+                    <View style={ [styles.auth_button, styles.auth_fullWidthButton] } >
+                        <Button color={ '#ffffff' } title={ 'Create Account' } onPress={this._handleCreateAcountPress} />
+                    </View>
+                </View>
             </View>
         );
     }

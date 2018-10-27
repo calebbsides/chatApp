@@ -3,7 +3,8 @@ import {
   TextInput,
   View,
   Button,
-  Alert
+  Alert,
+  Text
 } from 'react-native';
 import * as Firebase from 'firebase';
 
@@ -42,9 +43,10 @@ export default class LogInScreen extends Component {
 
     render() {
         return (
-            <View style={ styles.container }>
+            <View style={ styles.auth_container }>
+                <Text style={ styles.auth_heading }>LOG IN</Text>
                 <TextInput 
-                    style={ styles.input } 
+                    style={ styles.auth_input } 
                     value={ this.state.userid } 
                     placeholder={ 'Email' }
                     textContentType={ 'username' }
@@ -52,16 +54,24 @@ export default class LogInScreen extends Component {
                     keyboardType={ 'email-address' }
                     onChangeText={ text => { this.setState({ userid: text }) } } />
                 <TextInput 
-                    style={ styles.input } 
+                    style={ styles.auth_input } 
                     value={ this.state.password } 
                     placeholder={ 'Password' }
                     secureTextEntry={ true }
                     textContentType={ 'password' }
                     autoCapitalize={ 'none' }
                     onChangeText={ text => { this.setState({ password: text }) } } />
-                <Button title={ 'Log In' } onPress={this._handleLoginPress} />
-                <Button title={ 'Forgot Password' } onPress={this._handleForgotPasswordPress} />
-                <Button title={ 'Create an Account' } onPress={this._handleCreateAcountPress} />
+                <View style={ styles.auth_buttonContainer }>
+                    <View style={ [styles.auth_button, styles.auth_fullWidthButton] } >
+                        <Button color={ '#ffffff' } title={ 'Log In' } onPress={this._handleLoginPress} />
+                    </View>
+                    <View style={ styles.auth_button } >
+                        <Button color={ '#ffffff' } title={ 'Forgot Password' } onPress={this._handleForgotPasswordPress} />
+                    </View>
+                    <View style={ styles.auth_button } >
+                        <Button color={ '#ffffff' } title={ 'Create an Account' } onPress={this._handleCreateAcountPress} />
+                    </View>
+                </View>
             </View>
         );
     }

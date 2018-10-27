@@ -3,7 +3,8 @@ import {
   TextInput,
   View,
   Button,
-  Alert
+  Alert,
+  Text
 } from 'react-native';
 import * as Firebase from 'firebase';
 
@@ -34,14 +35,20 @@ export default class ForgotPaswordScreen extends Component {
 
     render() {
         return (
-        <View style={styles.container}>
+        <View style={ styles.auth_container }>
+            <Text style={ styles.auth_heading }>Forgot Password</Text>
             <TextInput 
-                style={ styles.input } 
+                style={ styles.auth_input } 
                 value={ this.state.userid } 
                 placeholder={ 'Email' }
                 autoCapitalize={ 'none' }
+                keyboardType={ 'email-address' }
                 onChangeText={ text => { this.setState({ userid: text }) } } />
-            <Button title={ 'Reset Password' } onPress={this._handleResetPasswordPress} />
+            <View style={ styles.auth_buttonContainer }>
+                <View style={ [styles.auth_button, styles.auth_fullWidthButton] } >
+                    <Button color={ '#ffffff' } title={ 'Reset Password' } onPress={this._handleResetPasswordPress} />
+                </View>
+            </View>
         </View>
         );
     }

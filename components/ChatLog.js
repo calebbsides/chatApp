@@ -3,6 +3,7 @@ import { View, TextInput, KeyboardAvoidingView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { actions } from '../redux/actions';
 
+import Blockchain from './Blockchain/Blockchain';
 import Messages from './Messages';
 
 import styles from '../styles/appStyles';
@@ -39,6 +40,7 @@ class ChatLog extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            chain: new Blockchain(this.props.messages, 10, 1),
             inputHeight: 10,
             message: ''
         }
@@ -61,8 +63,10 @@ class ChatLog extends Component {
     }
 
     componentDidMount() {
+        //Subscribe to the channel
         this.props.actions.setChannel(this.props.pusher.subscribe('private-NuggetsOnly'));
 
+        // Write messages from server to database
         this.props.pusher.bind('receiveMessage', (data) => {
             this.props.actions.writeMessage({ 
                 message: data.message,
@@ -71,6 +75,7 @@ class ChatLog extends Component {
             this.sendNotification(data.message);
         });
 
+        // Send notifications if enabled and app is in the background
         this.props.pusher.bind('client-message', (data) => {
             this.sendNotification(data.message);
         });
@@ -84,17 +89,32 @@ class ChatLog extends Component {
         const { message } = this.state;
 
         if(message.trim() !== '') {
+
+            // Trigger push event with message
             this.props.channel.trigger('client-message', {
                 message: message, 
                 user: this.props.user.userKey
             });
+
+            // Write message to database
             this.props.actions.writeMessage({ 
                 message: message, 
                 user: this.props.user.userKey
             });
+
+            // Add Message to blockchain
+            this.state.chain.addMessage({
+                message: this.state.message,
+                user: this.props.user.userid
+            });
+
+            // Reset message
             this.setState({
                 message: ''
             })
+
+            // Mine pending messages
+            this.state.chain.minePendingMessages();
         }
     }
 
@@ -102,7 +122,7 @@ class ChatLog extends Component {
         return (
             <View style={styles.chatlog_container}>
                 <Messages />
-                <KeyboardAvoidingView style={styles.chatlog_inputContainer} behavior='padding' keyboardVerticalOffset={115}>
+                <KeyboardAvoidingView style={styles.chatlog_inputContainer} behavior='padding' keyboardVerticalOffset={65}>
                     <TextInput 
                         style={ [styles.chatlog_input, {marginBottom: this.state.inputHeight}] }
                         value={this.state.message} 

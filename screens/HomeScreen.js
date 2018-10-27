@@ -96,7 +96,7 @@ class HomeScreen extends React.Component {
 
   render() {
     return ( 
-      <View style = {styles.app_container} >
+      <View style={ styles.app_container } >
         <ChatLog />
       </View>
     );

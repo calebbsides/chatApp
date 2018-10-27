@@ -2,39 +2,37 @@ import React from 'react';
 import {
   StyleSheet
 } from 'react-native';
-
+import Colors from '../constants/Colors';
 
 export default StyleSheet.create({
   app_container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 50
+    backgroundColor: Colors.appPalette1
   },
   profile_container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.appPalette2,
     alignItems: 'center',
     justifyContent: 'center'
   },
   chatlog_container: {
     flexDirection: 'column',
     flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 20
+    backgroundColor: Colors.appPalette2,
   },
   chatlog_inputContainer: {
     width: '100%',
-    backgroundColor: '#F1F1F1',
+    backgroundColor: Colors.appPalette2,
   },
   chatlog_input: {
-    height: 35,
+    height: 50,
     width: '90%',
     borderWidth: 1,
     borderRadius: 100,
-    borderColor: '#CBCBCB',
+    borderColor: Colors.appPalette1,
     paddingLeft: 20,
     alignSelf: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.appPalette2,
     margin: 10
   },
   message_container: {
@@ -46,11 +44,12 @@ export default StyleSheet.create({
   message_input: {
     maxWidth: '80%',
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor: Colors.appPalette1,
     borderRadius: 20,
     fontSize: 25,
     padding: 20,
-    marginTop: 10
+    marginTop: 10,
+    color: Colors.textColor,
   },
   message_inputRight: {
     alignSelf: 'flex-end',

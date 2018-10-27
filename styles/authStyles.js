@@ -1,30 +1,31 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import Colors from '../constants/Colors';
 
 export default StyleSheet.create({
     auth_container: {
         flex: 1,
-        backgroundColor: '#9550e5',
+        backgroundColor: Colors.appPalette1,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        marginTop: 20,
+        marginTop: 65,
     },
     auth_heading: {
-        color: '#ffffff',
+        color: Colors.appPalette2,
         fontSize: 38,
         fontWeight: 'bold',
-        marginTop: 60,
+        marginTop: 40,
         marginBottom: 100,
     },
     auth_input: {
         width: 300,
         height: 50,
         borderWidth: 1,
-        borderColor: '#bcbcbc',
+        borderColor: Colors.appPalette3,
         padding: 5,
         margin: 5,
         borderRadius: 10,
-        backgroundColor: '#ffffff'
+        backgroundColor: Colors.appPalette2,
     },
     auth_buttonContainer: {
         flexDirection: 'row',
@@ -36,7 +37,7 @@ export default StyleSheet.create({
         width: 140,
         margin: 10,
         borderWidth: 1,
-        borderColor: '#ffffff',
+        borderColor: Colors.appPalette2,
         borderRadius: 10,
     },
     auth_fullWidthButton: {

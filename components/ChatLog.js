@@ -64,7 +64,10 @@ class ChatLog extends Component {
 
     componentDidMount() {
         //Subscribe to the channel
-        this.props.actions.setChannel(this.props.pusher.subscribe('private-NuggetsOnly'));
+        let channel = this.props.pusher.subscribe('private-NuggetsOnly');
+        this.props.actions.setChannel(channel);
+
+        console.info(this.props.channel);
 
         // Write messages from server to database
         this.props.pusher.bind('receiveMessage', (data) => {
@@ -111,7 +114,7 @@ class ChatLog extends Component {
             // Reset message
             this.setState({
                 message: ''
-            })
+            });
 
             // Mine pending messages
             this.state.chain.minePendingMessages();

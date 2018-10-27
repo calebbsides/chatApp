@@ -2,7 +2,7 @@ import Pusher from 'pusher-js/react-native';
 
 const initialState = {
     pusher: new Pusher('34b5eb49f328341df2f1', {
-        authEndpoint: 'https://server-zxjljhbupn.now.sh/pusher/auth',
+        authEndpoint: 'https://nuggetchat.herokuapp.com/',
         cluster: 'us2',
         encrypted: true
     }),
@@ -35,5 +35,7 @@ const reducer = (state = initialState, action) => {
             return state;
     }
 }
+
+Pusher.logToConsole = true;
 
 export { reducer };

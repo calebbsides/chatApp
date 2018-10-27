@@ -34,7 +34,10 @@ app.get("/pusher/auth", function (req, res) {
   res.set({
     "Content-Type": "application/javascript"
   });
-  res.send('<h1>Listening for Pusher events...</h1>' + cb);
+  res.send(
+    '<h1>Listening for Pusher events...</h1>' + 
+    '<p>With auth: ' + cb + '</p>'
+  );
 });
 
 app.post('/pusher/auth', function (req, res) {

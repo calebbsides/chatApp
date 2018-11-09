@@ -2,18 +2,7 @@ import React, { Component } from 'react';
 import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
-import styles from '../styles/appStyles';
-
-mapStateToProps = state => {
-    return {
-        user: state.user,
-        messages: state.messages
-    };
-}
-  
-mapDispatchToProps = dispatch => {
-    return {};
-}
+import styles from '../styles/app';
 
 class Messages extends Component {
     constructor(props) {
@@ -41,6 +30,17 @@ class Messages extends Component {
             </ScrollView>
         )
     }
+}
+
+mapStateToProps = state => {
+    return {
+        user: state.user,
+        messages: state.messages
+    };
+}
+  
+mapDispatchToProps = dispatch => {
+    return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Messages);

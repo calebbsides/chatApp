@@ -1,0 +1,9 @@
+{
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 32101,
+  "expoServerNgrokUrl": "https://db-xe7.calebbsides.chatapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.db-xe7.calebbsides.chatapp.exp.direct",
+  "ngrokPid": 32118,
+  "devToolsPort": 19002
+}

@@ -2,10 +2,10 @@
 
 Chat App is a react-native application that I have written as a side project to explore new technologies. It allows users to communicate with each other in a chat room style environment. The technologies used here are :
 
- * Pusher - an API that is used to connect users to the chat room
- * Redux - for maintaining the global state of the application
- * Nodejs - handles connecting the front end with the Pusher API as well as authenticating the pusher client
- * BlockChain - A self implementation of a blockchain, each message in the log is a block in the blockchain, the log itself is the ledger
+ * **Pusher** - an API that is used to connect users to the chat room
+ * **Redux** - for maintaining the global state of the application
+ * **Nodejs** - handles connecting the front end with the Pusher API as well as authenticating the pusher client
+ * **Blockchain** - A self implementation of a blockchain, each message in the log is a block in the blockchain, the log itself is the ledger
 
 ## Getting Started
 
